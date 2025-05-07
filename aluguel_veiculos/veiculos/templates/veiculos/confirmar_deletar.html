@@ -1,0 +1,13 @@
+{% extends 'veiculos/base.html' %}
+
+{% block title %}Confirmar Exclusão{% endblock %}
+
+{% block content %}
+
+<h1>Tem certeza que deseja excluir este veículo?</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sim, excluir</button>
+    <a href="/veiculos/" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
