@@ -1,4 +1,5 @@
 {% extends 'veiculos/base.html' %}
+{% load static %}
 
 {% block title %}Listar Veículos{% endblock %}
 
@@ -6,42 +7,38 @@
 <!-- Conteúdo específico da página listar -->
 <h1>Lista de Veículos</h1>
 
-<div class="container mt-5">
-    <h1 class="text-center">Lista de Veículos</h1>
-    <table class="table table-striped mt-4">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Ano</th>
-                <th>Disponível</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for veiculo in veiculos %}
-            <tr>
-                <td>{{ veiculo.id }}</td>
-                <td>{{ veiculo.marca }}</td>
-                <td>{{ veiculo.modelo }}</td>
-                <td>{{ veiculo.ano }}</td>
-                <td>{{ veiculo.disponivel|yesno:"Sim,Não" }}</td>
-                <td>
-                    <a href="{% url 'editar_veiculo' veiculo.id %}" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="{% url 'deletar_veiculo' veiculo.id %}" class="btn btn-danger btn-sm">Deletar</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" class="text-center">Nenhum veículo encontrado.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <div class="d-flex justify-content-center">
-        <a href="{% url 'criar_veiculo' %}" class="btn btn-primary">Registrar Novo Carro</a>
-    </div>
+<div class="container mt-4">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for veiculo in veiculos %}
+      <div class="col">
+        <div class="card h-100">
+          {% if veiculo.foto %}
+            <img src="{{ veiculo.foto.url }}" class="card-img-top" alt="Imagem do veículo" style="max-height: 180px; object-fit: cover;">
+          {% else %}
+            <div class="d-flex align-items-center justify-content-center bg-light" style="height: 180px;">
+              <span class="text-muted">Sem foto</span>
+            </div>
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ veiculo.get_marca_display }} {{ veiculo.modelo }}</h5>
+            <p class="card-text">Ano: {{ veiculo.ano }}</p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Cor: {{ veiculo.get_cor_display }}</li>
+            <li class="list-group-item">Combustível: {{ veiculo.get_combustivel_display }}</li>
+            <li class="list-group-item">Preço Diária: {{ veiculo.preco_diaria }}</li>
+            <li class="list-group-item">Disponível: {{ veiculo.disponivel|yesno:"Sim,Não" }}</li>
+          </ul>
+          <div class="card-body d-flex justify-content-between">
+            <a href="{% url 'veiculos:editar' veiculo.id %}" class="btn btn-primary btn-sm">Editar</a>
+            <a href="{% url 'veiculos:deletar' veiculo.id %}" class="btn btn-danger btn-sm">Excluir</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center">Nenhum veículo cadastrado.</p>
+    {% endfor %}
+  </div>
 </div>
 
 {% endblock %}

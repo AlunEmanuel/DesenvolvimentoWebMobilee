@@ -13,7 +13,7 @@
 </div>
 {% endif %}
 
-<form method="post" class="mt-4">
+<form method="post" enctype="multipart/form-data" class="mt-4">
     {% csrf_token %}
     <div class="row mb-3">
         <div class="col-md-4">
@@ -37,6 +37,18 @@
             <label for="id_disponivel" class="form-label">Disponível</label>
             {{ form.disponivel|add_class:"form-check-input" }}
         </div>
+        <div class="col-md-4">
+            <label for="id_foto" class="form-label">Foto</label>
+            {{ form.foto|add_class:"form-control" }}
+        </div>
+        <div class="col-md-4">
+            <label for="id_cor" class="form-label">Cor</label>
+            {{ form.cor|add_class:"form-control" }}
+        </div>
+        <div class="col-md-4">
+            <label for="id_combustivel" class="form-label">Combustível</label>
+            {{ form.combustivel|add_class:"form-control" }}
+        </div>
     </div>
     <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-success mx-2">Salvar</button>
@@ -50,25 +62,40 @@
         const modeloField = document.getElementById('id_modelo');
         const modelosLabel = document.getElementById('modelos-disponiveis');
 
+        // Dicionário sincronizado com o backend (usando código da marca)
         const MARCAS_MODELOS = {
-            'Ford': ['Fiesta', 'Focus', 'Mustang', 'Explorer', 'F-150'],
-            'Chevrolet': ['Camaro', 'Silverado', 'Malibu', 'Equinox', 'Tahoe'],
-            'Toyota': ['Corolla', 'Camry', 'RAV4', 'Highlander', 'Tacoma'],
-            'Honda': ['Civic', 'Accord', 'CR-V', 'Pilot', 'Fit'],
-            'Nissan': ['Altima', 'Sentra', 'Rogue', 'Pathfinder', 'Frontier'],
-            'Volkswagen': ['Jetta', 'Passat', 'Tiguan', 'Golf', 'Atlas'],
-            'Hyundai': ['Elantra', 'Sonata', 'Tucson', 'Santa Fe', 'Kona'],
-            'Kia': ['Soul', 'Sportage', 'Sorento', 'Optima', 'Telluride'],
-            'Jeep': ['Wrangler', 'Cherokee', 'Grand Cherokee', 'Compass', 'Renegade'],
-            'Subaru': ['Outback', 'Forester', 'Impreza', 'Crosstrek', 'Ascent'],
-            // ...remaining brands and models...
+            1: ['A1', 'A3', 'A4', 'Q3', 'Q5'], // AUDI
+            2: ['320i', 'X1', 'X3', 'X5', 'M3'], // BMW
+            3: ['Onix', 'Cruze', 'S10', 'Tracker', 'Spin'], // CHEVROLET - GM
+            4: ['488', 'Roma', 'Portofino', 'SF90', 'F8'], // FERRARI
+            5: ['500', 'Panda', 'Tipo', 'Punto', 'Doblo'], // FIAT
+            6: ['Fiesta', 'Focus', 'Mustang', 'EcoSport', 'Ka'], // FORD
+            7: ['Civic', 'Fit', 'City', 'HR-V', 'WR-V'], // HONDA
+            8: ['HB20', 'Creta', 'Tucson', 'Santa Fe', 'Azera'], // HYUNDAI
+            9: ['Gol', 'Polo', 'Virtus', 'T-Cross', 'Jetta'], // VOLKSWAGEN
+        };
+
+        // Mapeamento de código para nome da marca
+        const CODIGO_MARCA_NOME = {
+            1: 'AUDI',
+            2: 'BMW',
+            3: 'CHEVROLET - GM',
+            4: 'FERRARI',
+            5: 'FIAT',
+            6: 'FORD',
+            7: 'HONDA',
+            8: 'HYUNDAI',
+            9: 'VOLKSWAGEN',
         };
 
         function updateModelosLabel() {
-            const selectedMarca = marcaField.value;
+            let selectedMarca = marcaField.value;
+            // Tenta converter para inteiro se vier como string
+            if (!isNaN(selectedMarca)) selectedMarca = parseInt(selectedMarca);
             const modelos = MARCAS_MODELOS[selectedMarca] || [];
+            const nomeMarca = CODIGO_MARCA_NOME[selectedMarca] || selectedMarca;
             modelosLabel.textContent = modelos.length > 0
-                ? `Modelos disponíveis para ${selectedMarca}: ${modelos.join(', ')}`
+                ? `Modelos disponíveis para ${nomeMarca}: ${modelos.join(', ')}`
                 : 'Nenhum modelo disponível para a marca selecionada.';
         }
 

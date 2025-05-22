@@ -4,4 +4,4 @@ from .models import Veiculo
 class VeiculoForm(forms.ModelForm):
     class Meta:
         model = Veiculo
-        fields = ['marca', 'modelo', 'ano', 'preco_diaria', 'disponivel']
+        fields = ['marca', 'modelo', 'ano', 'cor', 'combustivel', 'preco_diaria', 'disponivel', 'foto']

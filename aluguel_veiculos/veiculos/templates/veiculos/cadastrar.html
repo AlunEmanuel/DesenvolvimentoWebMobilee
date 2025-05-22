@@ -1,0 +1,47 @@
+{% extends 'veiculos/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Cadastrar Veículo</h2>
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="id_marca" class="form-label">Marca</label>
+                {{ form.marca|add_class:"form-control" }}
+            </div>
+            <div class="col-md-4">
+                <label for="id_modelo" class="form-label">Modelo</label>
+                {{ form.modelo|add_class:"form-control" }}
+            </div>
+            <div class="col-md-4">
+                <label for="id_ano" class="form-label">Ano</label>
+                {{ form.ano|add_class:"form-control" }}
+            </div>
+            <div class="col-md-4">
+                <label for="id_cor" class="form-label">Cor</label>
+                {{ form.cor|add_class:"form-control" }}
+            </div>
+            <div class="col-md-4">
+                <label for="id_combustivel" class="form-label">Combustível</label>
+                {{ form.combustivel|add_class:"form-control" }}
+            </div>
+            <div class="col-md-4">
+                <label for="id_preco_diaria" class="form-label">Preço Diária</label>
+                {{ form.preco_diaria|add_class:"form-control" }}
+            </div>
+            <div class="col-md-4">
+                <label for="id_disponivel" class="form-label">Disponível</label>
+                {{ form.disponivel|add_class:"form-check-input" }}
+            </div>
+            <div class="col-md-4">
+                <label for="id_foto" class="form-label">Foto</label>
+                {{ form.foto|add_class:"form-control" }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Salvar</button>
+        <a href="{% url 'veiculos:listar' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
